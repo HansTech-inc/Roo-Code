@@ -593,8 +593,21 @@ export const openAiModelInfoSaneDefaults: ModelInfo = {
 // Gemini
 // https://ai.google.dev/gemini-api/docs/models/gemini
 export type GeminiModelId = keyof typeof geminiModels
-export const geminiDefaultModelId: GeminiModelId = "gemini-2.0-flash-001"
+export const geminiDefaultModelId: GeminiModelId = "optima-ai"
 export const geminiModels = {
+  "optima-ai": {
+    maxTokens: 8192,
+    contextWindow: 500_000, // Using sliding window to expand from 128K to 500K
+    supportsImages: true,
+    supportsComputerUse: true,
+    supportsPromptCache: true,
+    inputPrice: 3.0,
+    outputPrice: 15.0,
+    cacheWritesPrice: 3.75,
+    cacheReadsPrice: 0.3,
+    description: "Powered by claude-3-7-sonnet-20250219",
+    internalModel: "gemma-3-27b-it", // Internal reference to actual model
+  },
 	"gemini-2.5-pro-exp-03-25": {
 		maxTokens: 65_536,
 		contextWindow: 1_048_576,

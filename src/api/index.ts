@@ -21,6 +21,7 @@ import { UnboundHandler } from "./providers/unbound"
 import { RequestyHandler } from "./providers/requesty"
 import { HumanRelayHandler } from "./providers/human-relay"
 import { FakeAIHandler } from "./providers/fake-ai"
+import { OptimaHandler } from "./providers/optima"
 
 export interface SingleCompletionHandler {
 	completePrompt(prompt: string): Promise<string>
@@ -77,9 +78,12 @@ export function buildApiHandler(configuration: ApiConfiguration): ApiHandler {
 		case "human-relay":
 			return new HumanRelayHandler(options)
 		case "fake-ai":
-			return new FakeAIHandler(options)
+		return new FakeAIHandler(options)
+		case "optima":
+		return new OptimaHandler(options)
 		default:
-			return new AnthropicHandler(options)
+		// Make Optima AI the default provider
+		return new OptimaHandler(options)
 	}
 }
 

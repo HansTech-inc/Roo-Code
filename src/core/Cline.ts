@@ -31,6 +31,7 @@ import {
 import { countFileLines } from "../integrations/misc/line-counter"
 import { fetchInstructionsTool } from "./tools/fetchInstructionsTool"
 import { readFileTool } from "./tools/readFileTool"
+import { webSearchTool } from "./tools/webSearchTool"
 import { ExitCodeDetails } from "../integrations/terminal/TerminalProcess"
 import { Terminal } from "../integrations/terminal/Terminal"
 import { TerminalRegistry } from "../integrations/terminal/TerminalRegistry"
@@ -1407,11 +1408,13 @@ export class Cline extends EventEmitter<ClineEvents> {
 						case "switch_mode":
 							return `[${block.name} to '${block.params.mode_slug}'${block.params.reason ? ` because: ${block.params.reason}` : ""}]`
 						case "new_task": {
-							const mode = block.params.mode ?? defaultModeSlug
-							const message = block.params.message ?? "(no message)"
-							const modeName = getModeBySlug(mode, customModes)?.name ?? mode
-							return `[${block.name} in ${modeName} mode: '${message}']`
+						const mode = block.params.mode ?? defaultModeSlug
+						const message = block.params.message ?? "(no message)"
+						const modeName = getModeBySlug(mode, customModes)?.name ?? mode
+						return `[${block.name} in ${modeName} mode: '${message}']`
 						}
+						case "web_search":
+						return `[${block.name} for '${block.params.query}']`
 					}
 				}
 
@@ -2260,10 +2263,15 @@ export class Cline extends EventEmitter<ClineEvents> {
 					}
 
 					case "fetch_instructions": {
-						fetchInstructionsTool(this, block, askApproval, handleError, pushToolResult)
-						break
+					fetchInstructionsTool(this, block, askApproval, handleError, pushToolResult)
+					break
 					}
-
+					
+					case "web_search": {
+					webSearchTool(this, block, askApproval, handleError, pushToolResult, removeClosingTag)
+					break
+					}
+					
 					case "list_files": {
 						const relDirPath: string | undefined = block.params.path
 						const recursiveRaw: string | undefined = block.params.recursive

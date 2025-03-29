@@ -15,6 +15,7 @@
 
 @layer theme, base, components, utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
 @import "tailwindcss/theme.css" layer(theme);
 @import "./preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
@@ -127,25 +128,25 @@
 		--card-foreground: var(--vscode-editor-foreground);
 		--popover: var(--vscode-menu-background, var(--vscode-editor-background));
 		--popover-foreground: var(--vscode-menu-foreground, var(--vscode-editor-foreground));
-		--primary: var(--vscode-button-background);
-		--primary-foreground: var(--vscode-button-foreground);
-		--secondary: var(--vscode-button-secondaryBackground);
-		--secondary-foreground: var(--vscode-button-secondaryForeground);
-		--muted: var(--vscode-disabledForeground);
-		--muted-foreground: var(--vscode-descriptionForeground);
-		--accent: var(--vscode-list-hoverBackground);
-		--accent-foreground: var(--vscode-list-hoverForeground);
-		--destructive: var(--vscode-errorForeground);
-		--destructive-foreground: var(--vscode-button-foreground);
-		--border: var(--vscode-input-border);
-		--input: var(--vscode-input-background);
-		--ring: var(--vscode-input-border);
-		--chart-1: var(--vscode-charts-red);
-		--chart-2: var(--vscode-charts-blue);
-		--chart-3: var(--vscode-charts-yellow);
-		--chart-4: var(--vscode-charts-orange);
-		--chart-5: var(--vscode-charts-green);
-		--radius: 0.5rem;
+--primary: #FF69B4;
+--primary-foreground: #FFFFFF;
+--secondary: var(--vscode-button-secondaryBackground);
+--secondary-foreground: var(--vscode-button-secondaryForeground);
+--muted: var(--vscode-disabledForeground);
+--muted-foreground: var(--vscode-descriptionForeground);
+--accent: #FF69B4;
+--accent-foreground: #FFFFFF;
+--destructive: var(--vscode-errorForeground);
+--destructive-foreground: var(--vscode-button-foreground);
+--border: #FF69B4;
+--input: var(--vscode-input-background);
+--ring: #FF69B4;
+--chart-1: var(--vscode-charts-red);
+--chart-2: var(--vscode-charts-blue);
+--chart-3: var(--vscode-charts-yellow);
+--chart-4: var(--vscode-charts-orange);
+--chart-5: var(--vscode-charts-green);
+--radius: 1rem;
 	}
 }
 
@@ -161,11 +162,83 @@
 		border-color: var(--border);
 	}
 
-	/* Code Block Styles */
-	pre,
-	code {
-		background-color: var(--vscode-textCodeBlock-background);
-	}
+/* Code Block Styles */
+pre,
+code {
+background-color: #272822;
+color: #F8F8F2;
+font-family: 'Fira Code', monospace;
+padding: 1rem;
+border-radius: 0.5rem;
+border: 1px solid #FF69B4;
+position: relative;
+}
+
+/* Copy Button Styles */
+.copy-button {
+position: absolute;
+top: 0.5rem;
+right: 0.5rem;
+background: #FF69B4;
+color: white;
+border: none;
+border-radius: 0.25rem;
+padding: 0.25rem;
+opacity: 0;
+transition: opacity 0.2s;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 0.25rem;
+}
+
+pre:hover .copy-button,
+code:hover .copy-button,
+.message:hover .copy-button {
+opacity: 1;
+}
+
+.copy-button:hover {
+background: #ff4aa6;
+}
+
+.copy-button svg {
+width: 1rem;
+height: 1rem;
+}
+
+.copy-button.copied {
+background: #4CAF50;
+}
+
+/* Message Container */
+.message {
+position: relative;
+}
+
+/* Monokai Theme with Pink Accent */
+code .keyword,
+code .function {
+color: #FF69B4;
+}
+
+code .string,
+code .number {
+color: #E6DB74;
+}
+
+code .comment {
+color: #75715E;
+}
+
+code .operator,
+code .punctuation {
+color: #F8F8F2;
+}
+
+code .variable {
+color: #66D9EF;
+}
 }
 
 /* Form Element Focus States */
