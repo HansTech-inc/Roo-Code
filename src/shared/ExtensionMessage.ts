@@ -70,13 +70,22 @@ export interface ExtensionMessage {
 		| "fileSearchResults"
 		| "toggleApiConfigPin"
 	text?: string
-	action?:
-		| "chatButtonClicked"
-		| "mcpButtonClicked"
-		| "settingsButtonClicked"
-		| "historyButtonClicked"
-		| "promptsButtonClicked"
-		| "didBecomeVisible"
+action?:
+| "chatButtonClicked"
+| "mcpButtonClicked"
+| "settingsButtonClicked"
+| "historyButtonClicked"
+| "promptsButtonClicked"
+| "didBecomeVisible"
+| "explainCode"
+| "fixCode"
+| "improveCode"
+| "addToContext"
+| "terminalAddToContext"
+| "terminalFixCommand"
+| "terminalExplainCommand"
+| "terminalFixCommandInCurrentTask"
+| "terminalExplainCommandInCurrentTask"
 	invoke?: "newChat" | "sendMessage" | "primaryButtonClick" | "secondaryButtonClick" | "setChatBoxMessage"
 	state?: ExtensionState
 	images?: string[]

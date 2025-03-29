@@ -50,29 +50,29 @@ export const registerCommands = (options: RegisterCommandOptions) => {
 
 const getCommandsMap = ({ context, outputChannel, provider }: RegisterCommandOptions) => {
 	return {
-		"roo-cline.plusButtonClicked": async () => {
+		"optima-ai.plusButtonClicked": async () => {
 			await provider.removeClineFromStack()
 			await provider.postStateToWebview()
 			await provider.postMessageToWebview({ type: "action", action: "chatButtonClicked" })
 		},
-		"roo-cline.mcpButtonClicked": () => {
+		"optima-ai.mcpButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "mcpButtonClicked" })
 		},
-		"roo-cline.promptsButtonClicked": () => {
+		"optima-ai.promptsButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "promptsButtonClicked" })
 		},
-		"roo-cline.popoutButtonClicked": () => openClineInNewTab({ context, outputChannel }),
-		"roo-cline.openInNewTab": () => openClineInNewTab({ context, outputChannel }),
-		"roo-cline.settingsButtonClicked": () => {
+"optima-ai.popoutButtonClicked": () => openClineInNewTab({ context, outputChannel }),
+"optima-ai.openInNewTab": () => openClineInNewTab({ context, outputChannel }),
+"optima-ai.settingsButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "settingsButtonClicked" })
 		},
-		"roo-cline.historyButtonClicked": () => {
+		"optima-ai.historyButtonClicked": () => {
 			provider.postMessageToWebview({ type: "action", action: "historyButtonClicked" })
 		},
-		"roo-cline.helpButtonClicked": () => {
-			vscode.env.openExternal(vscode.Uri.parse("https://docs.roocode.com"))
+"optima-ai.helpButtonClicked": () => {
+vscode.env.openExternal(vscode.Uri.parse("https://github.com/HansTech-inc/Roo-Code"))
 		},
-		"roo-cline.showHumanRelayDialog": (params: { requestId: string; promptText: string }) => {
+		"optima-ai.showHumanRelayDialog": (params: { requestId: string; promptText: string }) => {
 			const panel = getPanel()
 
 			if (panel) {
@@ -83,11 +83,38 @@ const getCommandsMap = ({ context, outputChannel, provider }: RegisterCommandOpt
 				})
 			}
 		},
-		"roo-cline.registerHumanRelayCallback": registerHumanRelayCallback,
-		"roo-cline.unregisterHumanRelayCallback": unregisterHumanRelayCallback,
-		"roo-cline.handleHumanRelayResponse": handleHumanRelayResponse,
-		"roo-cline.newTask": handleNewTask,
-		"roo-cline.setCustomStoragePath": async () => {
+"optima-ai.registerHumanRelayCallback": registerHumanRelayCallback,
+"optima-ai.unregisterHumanRelayCallback": unregisterHumanRelayCallback,
+"optima-ai.handleHumanRelayResponse": handleHumanRelayResponse,
+"optima-ai.newTask": handleNewTask,
+"optima-ai.explainCode": () => {
+provider.postMessageToWebview({ type: "action", action: "explainCode" })
+},
+"optima-ai.fixCode": () => {
+provider.postMessageToWebview({ type: "action", action: "fixCode" })
+},
+"optima-ai.improveCode": () => {
+provider.postMessageToWebview({ type: "action", action: "improveCode" })
+},
+"optima-ai.addToContext": () => {
+provider.postMessageToWebview({ type: "action", action: "addToContext" })
+},
+"optima-ai.terminalAddToContext": () => {
+provider.postMessageToWebview({ type: "action", action: "terminalAddToContext" })
+},
+"optima-ai.terminalFixCommand": () => {
+provider.postMessageToWebview({ type: "action", action: "terminalFixCommand" })
+},
+"optima-ai.terminalExplainCommand": () => {
+provider.postMessageToWebview({ type: "action", action: "terminalExplainCommand" })
+},
+"optima-ai.terminalFixCommandInCurrentTask": () => {
+provider.postMessageToWebview({ type: "action", action: "terminalFixCommandInCurrentTask" })
+},
+"optima-ai.terminalExplainCommandInCurrentTask": () => {
+provider.postMessageToWebview({ type: "action", action: "terminalExplainCommandInCurrentTask" })
+},
+"optima-ai.setCustomStoragePath": async () => {
 			const { promptForCustomStoragePath } = await import("../shared/storagePathManager")
 			await promptForCustomStoragePath()
 		},
@@ -99,8 +126,8 @@ const openClineInNewTab = async ({ context, outputChannel }: Omit<RegisterComman
 	// deserialize cached webview, but since we use retainContextWhenHidden, we
 	// don't need to use that event).
 	// https://github.com/microsoft/vscode-extension-samples/blob/main/webview-sample/src/extension.ts
-	const tabProvider = new ClineProvider(context, outputChannel, "editor")
-	const lastCol = Math.max(...vscode.window.visibleTextEditors.map((editor) => editor.viewColumn || 0))
+	const tabProvider = new ClineProvider(context, outputChannel, "editor");
+	const lastCol = Math.max(...vscode.window.visibleTextEditors.map((editor: vscode.TextEditor) => editor.viewColumn || 0))
 
 	// Check if there are any visible text editors, otherwise open a new group
 	// to the right.
@@ -112,7 +139,7 @@ const openClineInNewTab = async ({ context, outputChannel }: Omit<RegisterComman
 
 	const targetCol = hasVisibleEditors ? Math.max(lastCol + 1, 1) : vscode.ViewColumn.Two
 
-	const newPanel = vscode.window.createWebviewPanel(ClineProvider.tabPanelId, "Roo Code", targetCol, {
+	const newPanel = vscode.window.createWebviewPanel(ClineProvider.tabPanelId, "Optima AI", targetCol, {
 		enableScripts: true,
 		retainContextWhenHidden: true,
 		localResourceRoots: [context.extensionUri],
@@ -123,10 +150,7 @@ const openClineInNewTab = async ({ context, outputChannel }: Omit<RegisterComman
 
 	// TODO: Use better svg icon with light and dark variants (see
 	// https://stackoverflow.com/questions/58365687/vscode-extension-iconpath).
-	newPanel.iconPath = {
-		light: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "panel_light.png"),
-		dark: vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "panel_dark.png"),
-	}
+newPanel.iconPath = vscode.Uri.joinPath(context.extensionUri, "assets", "icons", "icon.svg")
 
 	await tabProvider.resolveWebviewView(newPanel)
 
