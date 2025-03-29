@@ -46,6 +46,15 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(outputChannel)
 	outputChannel.appendLine("Roo-Code extension activated")
 
+	// Add environment variable handling to prevent crashes on missing .env
+	try {
+		// Try to load environment variables, but continue if it fails
+		require("@dotenvx/dotenvx").config({ silent: true });
+	} catch (error) {
+		// Log but don't crash the extension
+		console.log("Note: .env file not found, using default environment settings");
+	}
+
 	// Migrate old settings to new
 	await migrateSettings(context, outputChannel)
 
